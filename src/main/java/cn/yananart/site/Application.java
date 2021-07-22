@@ -1,8 +1,8 @@
 package cn.yananart.site;
 
+import cn.yananart.framework.YananartApplication;
+import cn.yananart.framework.YananartBootstrap;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * 启动类
@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2021/7/20
  */
 @Slf4j
-@SpringBootApplication
+@YananartApplication
 public class Application {
 
     /**
@@ -20,6 +20,6 @@ public class Application {
      * @param args args
      */
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        YananartBootstrap.run(Application.class, args);
     }
 }

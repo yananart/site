@@ -1,7 +1,7 @@
 package cn.yananart.site.api;
 
-import cn.yananart.site.annotation.HttpApi;
-import cn.yananart.site.web.AbstractApi;
+import cn.yananart.framework.annotation.HttpApi;
+import cn.yananart.framework.annotation.Mapping;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 
@@ -12,10 +12,10 @@ import io.vertx.core.http.HttpServerResponse;
  * @date 2021/7/21
  */
 @HttpApi
-public class HelloWorldApi extends AbstractApi {
+public class HelloWorldApi {
 
-    @Override
-    public void handler(HttpServerRequest request, HttpServerResponse response) {
+    @Mapping
+    public void helloWorld(HttpServerResponse response) {
         // 类型
         response.putHeader("content-type", "text/plain");
         // 写入响应并结束处理

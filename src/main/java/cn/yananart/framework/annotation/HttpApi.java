@@ -1,4 +1,4 @@
-package cn.yananart.site.annotation;
+package cn.yananart.framework.annotation;
 
 import org.springframework.stereotype.Component;
 
