@@ -1,7 +1,6 @@
 package cn.yananart.site;
 
 import cn.yananart.framework.YananartApplication;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 启动类
@@ -9,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
  * @author yananart
  * @date 2021/7/20
  */
-@Slf4j
 public class Application {
 
     /**

@@ -1,10 +1,11 @@
 package cn.yananart.framework;
 
-import cn.yananart.framework.config.YananartConfig;
+import cn.yananart.framework.config.YananartContext;
+import cn.yananart.framework.logging.Logger;
+import cn.yananart.framework.logging.LoggerFactory;
 import cn.yananart.framework.worker.WebWorker;
 import io.vertx.core.Vertx;
-import io.vertx.ext.web.Router;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Getter;
 
 import java.util.Objects;
 
@@ -14,11 +15,24 @@ import java.util.Objects;
  * @author yananart
  * @date 2021/7/22
  */
-@Slf4j
 public class YananartApplication {
 
-    public YananartApplication() {
-    }
+    private static final Logger log = LoggerFactory.getLogger(YananartApplication.class);
+
+
+    /**
+     * 启动类
+     */
+    @Getter
+    private static Class<?> startClass;
+
+
+    /**
+     * 应用上下文
+     */
+    @Getter
+    private static YananartContext context;
+
 
     /**
      * 启动方法
@@ -26,19 +40,23 @@ public class YananartApplication {
      * @param clazz 启动类
      * @param args  启动参数
      */
-    public static void run(Class<?> clazz, String... args) {
+    public static YananartContext run(Class<?> clazz, String... args) {
         Objects.requireNonNull(clazz, "Start class can not be null");
-        init();
+        startClass = clazz;
+        YananartApplication.context = init();
         log.info("Yananart application start success!");
+        return YananartApplication.context;
     }
+
 
     /**
      * 初始化
      */
-    private static void init() {
-        Vertx vertx = YananartConfig.getVertx();
+    private static YananartContext init() {
+        YananartContext context = new YananartContext();
+        Vertx vertx = context.getVertx();
         Objects.requireNonNull(vertx, "Load vertx instance failed");
-        var router = YananartConfig.getRouter();
-        new WebWorker(vertx, router).startWebServer();
+        new WebWorker(context).startWebServer();
+        return context;
     }
 }

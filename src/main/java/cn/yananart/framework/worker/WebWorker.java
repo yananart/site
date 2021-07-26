@@ -1,8 +1,11 @@
 package cn.yananart.framework.worker;
 
+import cn.yananart.framework.YananartApplication;
 import cn.yananart.framework.annotation.ApiMapping;
 import cn.yananart.framework.annotation.HttpApi;
-import cn.yananart.framework.config.YananartConfig;
+import cn.yananart.framework.config.YananartContext;
+import cn.yananart.framework.logging.Logger;
+import cn.yananart.framework.logging.LoggerFactory;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
@@ -15,13 +18,12 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.FaviconHandler;
 import io.vertx.ext.web.handler.ResponseContentTypeHandler;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 
 import static cn.yananart.framework.commons.Constants.URL_PATH_SPLIT;
 
@@ -31,8 +33,9 @@ import static cn.yananart.framework.commons.Constants.URL_PATH_SPLIT;
  * @author yananart
  * @date 2021/7/21
  */
-@Slf4j
 public class WebWorker {
+
+    private static final Logger log = LoggerFactory.getLogger(WebWorker.class);
 
     /**
      * vertx单例
@@ -44,10 +47,15 @@ public class WebWorker {
      */
     private final Router router;
 
-    public WebWorker(Vertx vertx,
-                     Router router) {
-        this.vertx = vertx;
-        this.router = router;
+    /**
+     * config
+     */
+    private final YananartContext config;
+
+    public WebWorker(YananartContext config) {
+        this.config = config;
+        this.vertx = config.getVertx();
+        this.router = config.getRouter();
     }
 
 
@@ -60,10 +68,14 @@ public class WebWorker {
         // favicon
         setFavicon();
         // 注册http接口
-        registerHttpApi();
+        try {
+            registerHttpApi();
+        } catch (Exception e) {
+            log.error("加载http接口异常", e);
+        }
         // 启动监听
         httpServer.requestHandler(router)
-                .listen(vertxConfig.getPort())
+                .listen(config.getPort())
                 .onFailure(error -> log.error("Started web server fail", error))
                 .onSuccess(server -> log.info("Started web server in {} with vertx", server.actualPort()));
     }
@@ -106,7 +118,7 @@ public class WebWorker {
      * 设置网站图标
      */
     private void setFavicon() {
-        FaviconHandler faviconHandler = FaviconHandler.create(vertx, vertxConfig.getFavicon());
+        FaviconHandler faviconHandler = FaviconHandler.create(vertx, config.getFavicon());
         router.route("/favicon.ico").handler(faviconHandler);
     }
 
@@ -132,13 +144,18 @@ public class WebWorker {
     /**
      * 扫描spring容器，将所有包含注解的bean转换注册到vertx上
      */
-    private void registerHttpApi() {
-        // 扫描所有注解声明的类
-        var beanWithHttp = applicationContext.getBeansWithAnnotation(HttpApi.class);
+    private void registerHttpApi() throws Exception {
+        // start class
+        var startClass = YananartApplication.getStartClass();
+        var pkgName = startClass.getPackageName();
+
+        Set<Class<?>> classes = Scanner.getAnnotationClasses(pkgName, HttpApi.class);
+
         // 遍历所有api
-        for (final var httpBean : beanWithHttp.values()) {
+        for (final var clazz : classes) {
+            // 实例 todo 考虑单例 IOC
+            Object bean = clazz.getDeclaredConstructor().newInstance();
             // 获取当前bean的类型，且获取其上的注解
-            final var clazz = httpBean.getClass();
             final var apiAnnotation = clazz.getAnnotation(HttpApi.class);
             // 获取该类的所有方法，遍历查看是否包含注解
             final var methods = clazz.getMethods();
@@ -180,7 +197,7 @@ public class WebWorker {
                         }
                         Object result;
                         try {
-                            result = method.invoke(httpBean, paramList.toArray());
+                            result = method.invoke(bean, paramList.toArray());
                         } catch (Exception e) {
                             var cause = e.getCause();
                             log.error("http handler error", cause);
