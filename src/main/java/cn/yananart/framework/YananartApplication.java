@@ -1,48 +1,44 @@
 package cn.yananart.framework;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.core.annotation.AliasFor;
+import cn.yananart.framework.config.YananartConfig;
+import cn.yananart.framework.worker.WebWorker;
+import io.vertx.core.Vertx;
+import io.vertx.ext.web.Router;
+import lombok.extern.slf4j.Slf4j;
 
-import java.lang.annotation.*;
+import java.util.Objects;
 
 /**
- * 应用启动注解
+ * 启动类
  *
  * @author yananart
  * @date 2021/7/22
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Inherited
-@SpringBootApplication
-@ComponentScan
-@ComponentScan(basePackages = "cn.yananart.framework")
-public @interface YananartApplication {
+@Slf4j
+public class YananartApplication {
 
-    @AliasFor(
-            annotation = SpringBootApplication.class,
-            attribute = "exclude"
-    )
-    Class<?>[] exclude() default {};
+    public YananartApplication() {
+    }
 
-    @AliasFor(
-            annotation = SpringBootApplication.class,
-            attribute = "excludeName"
-    )
-    String[] excludeName() default {};
+    /**
+     * 启动方法
+     *
+     * @param clazz 启动类
+     * @param args  启动参数
+     */
+    public static void run(Class<?> clazz, String... args) {
+        Objects.requireNonNull(clazz, "Start class can not be null");
+        init();
+        log.info("Yananart application start success!");
+    }
 
-    @AliasFor(
-            annotation = SpringBootApplication.class,
-            attribute = "scanBasePackages"
-    )
-    String[] scanBasePackages() default {};
-
-    @AliasFor(
-            annotation = SpringBootApplication.class,
-            attribute = "scanBasePackageClasses"
-    )
-    Class<?>[] scanBasePackageClasses() default {};
-
+    /**
+     * 初始化
+     */
+    private static void init() {
+        Vertx vertx = YananartConfig.getVertx();
+        Objects.requireNonNull(vertx, "Load vertx instance failed");
+        var router = YananartConfig.getRouter();
+        new WebWorker(vertx, router).startWebServer();
+    }
 }

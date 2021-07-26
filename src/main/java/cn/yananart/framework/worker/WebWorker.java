@@ -1,8 +1,8 @@
 package cn.yananart.framework.worker;
 
+import cn.yananart.framework.annotation.ApiMapping;
 import cn.yananart.framework.annotation.HttpApi;
-import cn.yananart.framework.annotation.Mapping;
-import cn.yananart.framework.config.VertxConfig;
+import cn.yananart.framework.config.YananartConfig;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
@@ -12,6 +12,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.FaviconHandler;
 import io.vertx.ext.web.handler.ResponseContentTypeHandler;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -43,25 +44,10 @@ public class WebWorker {
      */
     private final Router router;
 
-    /**
-     * vertx配置
-     */
-    private final VertxConfig vertxConfig;
-
-    /**
-     * spring context
-     */
-    private final ApplicationContext applicationContext;
-
-
     public WebWorker(Vertx vertx,
-                     Router router,
-                     VertxConfig vertxConfig,
-                     ApplicationContext applicationContext) {
+                     Router router) {
         this.vertx = vertx;
         this.router = router;
-        this.vertxConfig = vertxConfig;
-        this.applicationContext = applicationContext;
     }
 
 
@@ -71,6 +57,8 @@ public class WebWorker {
     public void startWebServer() {
         // creat a server
         var httpServer = vertx.createHttpServer();
+        // favicon
+        setFavicon();
         // 注册http接口
         registerHttpApi();
         // 启动监听
@@ -115,6 +103,15 @@ public class WebWorker {
 
 
     /**
+     * 设置网站图标
+     */
+    private void setFavicon() {
+        FaviconHandler faviconHandler = FaviconHandler.create(vertx, vertxConfig.getFavicon());
+        router.route("/favicon.ico").handler(faviconHandler);
+    }
+
+
+    /**
      * 将异常转化为json输出
      *
      * @param e 异常
@@ -146,7 +143,7 @@ public class WebWorker {
             // 获取该类的所有方法，遍历查看是否包含注解
             final var methods = clazz.getMethods();
             for (final var method : methods) {
-                final var mapAnnotation = method.getAnnotation(Mapping.class);
+                final var mapAnnotation = method.getAnnotation(ApiMapping.class);
                 // 如果包含接口声明注解，则注册
                 if (Objects.nonNull(mapAnnotation)) {
                     // 路径拼接处理，注册

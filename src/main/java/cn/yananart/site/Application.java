@@ -1,7 +1,6 @@
 package cn.yananart.site;
 
 import cn.yananart.framework.YananartApplication;
-import cn.yananart.framework.YananartBootstrap;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2021/7/20
  */
 @Slf4j
-@YananartApplication
 public class Application {
 
     /**
@@ -20,6 +18,6 @@ public class Application {
      * @param args args
      */
     public static void main(String[] args) {
-        YananartBootstrap.run(Application.class, args);
+        YananartApplication.run(Application.class, args);
     }
 }
