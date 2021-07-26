@@ -19,4 +19,10 @@ public class HomeApi {
         context.next();
     }
 
+
+    @ApiMapping(path = "/photo", type = ResponseType.TEMPLATE)
+    public void photos(RoutingContext context) {
+        context.next();
+    }
+
 }

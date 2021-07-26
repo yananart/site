@@ -7,6 +7,7 @@ import cn.yananart.framework.annotation.paramter.Body;
 import cn.yananart.framework.annotation.paramter.Param;
 import cn.yananart.framework.commons.ResponseType;
 import cn.yananart.framework.config.YananartContext;
+import cn.yananart.framework.handler.TemplateHandler;
 import cn.yananart.framework.logging.Logger;
 import cn.yananart.framework.logging.LoggerFactory;
 import io.vertx.core.Vertx;
@@ -21,7 +22,7 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.FaviconHandler;
 import io.vertx.ext.web.handler.ResponseContentTypeHandler;
-import io.vertx.ext.web.handler.TemplateHandler;
+import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
 import lombok.NonNull;
 
@@ -195,8 +196,14 @@ public class WebWorker {
         // start class
         var startClass = YananartApplication.getStartClass();
         var pkgName = startClass.getPackageName();
+
         // TemplateHandler
         final TemplateHandler templateHandler = TemplateHandler.create(ThymeleafTemplateEngine.create(vertx));
+
+        // static
+        var sHandler = StaticHandler.create();
+        sHandler.setWebRoot("static");
+        router.route("/static/*").handler(sHandler);
 
         Set<Class<?>> classes = Scanner.getAnnotationClasses(pkgName, HttpApi.class);
 

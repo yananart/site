@@ -84,17 +84,15 @@ public class Scanner {
                                     packageName = name.substring(0, idx).replace('/', '.');
                                 }
                                 // 如果可以迭代下去 并且是一个包
-                                if ((idx != -1) || recursive) {
-                                    // 如果是一个.class文件 而且不是目录
-                                    if (name.endsWith(".class") && !entry.isDirectory()) {
-                                        // 去掉后面的".class" 获取真正的类名
-                                        String className = name.substring(packageName.length() + 1, name.length() - 6);
-                                        try {
-                                            // 添加到classes
-                                            classes.add(Class.forName(packageName + '.' + className));
-                                        } catch (ClassNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
+                                // 如果是一个.class文件 而且不是目录
+                                if (name.endsWith(".class") && !entry.isDirectory()) {
+                                    // 去掉后面的".class" 获取真正的类名
+                                    String className = name.substring(packageName.length() + 1, name.length() - 6);
+                                    try {
+                                        // 添加到classes
+                                        classes.add(Class.forName(packageName + '.' + className));
+                                    } catch (ClassNotFoundException e) {
+                                        e.printStackTrace();
                                     }
                                 }
                             }
@@ -141,10 +139,10 @@ public class Scanner {
 
 
     public static <A extends Annotation> Set<Class<?>> getAnnotationClasses(String packageName, Class<A> annotationClass) throws Exception {
-        //找用了annotationClass注解的类
+        // 找用了annotationClass注解的类
         Set<Class<?>> controllers = new HashSet<>();
         Set<Class<?>> clsList = getClasses(packageName);
-        if (clsList != null && clsList.size() > 0) {
+        if (!clsList.isEmpty()) {
             for (Class<?> cls : clsList) {
                 if (cls.getAnnotation(annotationClass) != null) {
                     controllers.add(cls);
