@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -128,7 +128,7 @@
 
     <nav class="navbar navbar-default navbar-static-bottom" style="margin-bottom:0px;" role="navigation">
         <div class="col-sm-offset-5 col-sm-2">
-            <span id="copyright" class="text-center center-block"><h5>2018-2019 &copy; Yananart</h5></span>
+			<span id="copyright" class="text-center center-block"><h5>2018-<span th:text="${year}"></span> &copy; Yananart</h5></span>
             <span id="beian" class="text-center center-block"><small>浙ICP备18020377号</small></span>
         </div>
     </nav>

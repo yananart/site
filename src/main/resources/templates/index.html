@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
 
@@ -157,7 +157,7 @@
                      style="width: auto; height: 50px; cursor: pointer">
             </div>
             <div class="col-sm-8">
-                <span id="copyright" class="text-center center-block"><h5>2018-2021 &copy; Yananart</h5></span>
+                <span id="copyright" class="text-center center-block"><h5>2018-<span th:text="${year}"></span> &copy; Yananart</h5></span>
                 <span id="beian" class="text-center center-block"><a href="http://www.beian.miit.gov.cn/">浙ICP备18020377号-1</a></span>
             </div>
         </div>
