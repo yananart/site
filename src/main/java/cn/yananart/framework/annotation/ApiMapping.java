@@ -1,5 +1,7 @@
 package cn.yananart.framework.annotation;
 
+import cn.yananart.framework.commons.ResponseType;
+
 import java.lang.annotation.*;
 
 /**
@@ -20,10 +22,18 @@ public @interface ApiMapping {
      */
     String path() default "/";
 
+
+    /**
+     * 是否为异步
+     *
+     * @return 异步
+     */
+    boolean async() default true;
+
     /**
      * 响应类型
      *
      * @return 类型
      */
-    String type() default "";
+    ResponseType type() default ResponseType.JSON;
 }

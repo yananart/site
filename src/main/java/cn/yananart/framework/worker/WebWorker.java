@@ -3,10 +3,14 @@ package cn.yananart.framework.worker;
 import cn.yananart.framework.YananartApplication;
 import cn.yananart.framework.annotation.ApiMapping;
 import cn.yananart.framework.annotation.HttpApi;
+import cn.yananart.framework.annotation.paramter.Body;
+import cn.yananart.framework.annotation.paramter.Param;
+import cn.yananart.framework.commons.ResponseType;
 import cn.yananart.framework.config.YananartContext;
 import cn.yananart.framework.logging.Logger;
 import cn.yananart.framework.logging.LoggerFactory;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
@@ -17,8 +21,11 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.FaviconHandler;
 import io.vertx.ext.web.handler.ResponseContentTypeHandler;
+import io.vertx.ext.web.handler.TemplateHandler;
+import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
 import lombok.NonNull;
 
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -124,6 +131,46 @@ public class WebWorker {
 
 
     /**
+     * 从请求体中获取参数
+     *
+     * @param context   上下文
+     * @param parameter 参数
+     * @return 参数对象
+     */
+    private Object getParam(RoutingContext context,
+                            Parameter parameter) {
+        var request = context.request();
+
+        Class<?> clazz = parameter.getType();
+
+        if (Objects.isNull(parameter.getAnnotation(Body.class))) {
+            if (RoutingContext.class.equals(clazz)) {
+                return context;
+            } else if (HttpServerRequest.class.equals(clazz)) {
+                return context.request();
+            } else if (HttpServerResponse.class.equals(clazz)) {
+                return context.response();
+            } else if (String.class.equals(clazz)) {
+                Param param = parameter.getAnnotation(Param.class);
+                return request.getParam(param.value());
+            }
+        } else {
+            if (Buffer.class.equals(clazz)) {
+                return context.getBody();
+            } else if (JsonObject.class.equals(clazz)) {
+                return context.getBodyAsJson();
+            } else if (JsonArray.class.equals(clazz)) {
+                return context.getBodyAsJsonArray();
+            } else if (String.class.equals(clazz)) {
+                return context.getBodyAsString();
+            }
+        }
+        log.warn("can not load parameter [{}]", parameter.getName());
+        return null;
+    }
+
+
+    /**
      * 将异常转化为json输出
      *
      * @param e 异常
@@ -148,6 +195,8 @@ public class WebWorker {
         // start class
         var startClass = YananartApplication.getStartClass();
         var pkgName = startClass.getPackageName();
+        // TemplateHandler
+        final TemplateHandler templateHandler = TemplateHandler.create(ThymeleafTemplateEngine.create(vertx));
 
         Set<Class<?>> classes = Scanner.getAnnotationClasses(pkgName, HttpApi.class);
 
@@ -170,30 +219,29 @@ public class WebWorker {
                     // 请求体处理
                     route.handler(BodyHandler.create());
                     // 返回类型
-                    route.handler(ResponseContentTypeHandler.create());
-                    route.produces("application/json");
-                    route.produces("text/plain");
-                    // 获取当前方法的出入参类型，后面要按类型注入参数
-                    final var paramClassList = method.getParameterTypes();
-                    final var resultClass = method.getReturnType();
+                    switch (mapAnnotation.type()) {
+                        case JSON:
+                            route.handler(ResponseContentTypeHandler.create());
+                            route.produces("application/json");
+                            break;
+                        case PLAIN:
+                            route.handler(ResponseContentTypeHandler.create());
+                            route.produces("application/json");
+                            route.produces("text/plain");
+                            break;
+                        default:
+                            // noting
+                    }
+                    // 获取当前方法的出入参，后面要按类型注入参数
+                    final var parameterArray = method.getParameters();
                     // 响应回调
                     route.handler(context -> {
                         var request = context.request();
                         var response = context.response();
                         // 创建请求的参数
-                        var paramList = new ArrayList<>(paramClassList.length);
-                        for (var paramClass : paramClassList) {
-                            if (RoutingContext.class.equals(paramClass)) {
-                                paramList.add(context);
-                            } else if (HttpServerRequest.class.equals(paramClass)) {
-                                paramList.add(request);
-                            } else if (HttpServerResponse.class.equals(paramClass)) {
-                                paramList.add(response);
-                            } else {
-                                // todo format obj
-                                // JsonObject jsonObject = context.getBodyAsJson();
-                                paramList.add(null);
-                            }
+                        var paramList = new ArrayList<>(parameterArray.length);
+                        for (Parameter parameter : parameterArray) {
+                            paramList.add(getParam(context, parameter));
                         }
                         Object result;
                         try {
@@ -205,22 +253,33 @@ public class WebWorker {
                             response.end(translateExceptionJson(cause).toString());
                             return;
                         }
-                        // 制定规则，如果返回结果不为Void，默认是同步方法，在这里判断并结束
-                        if (!resultClass.equals(Void.class) && !resultClass.equals(void.class)) {
-                            if (!response.ended()) {
-                                if (Objects.nonNull(result)) {
-                                    // todo 需要调整输出形式
-                                    if (isBasicReturnType(result)) {
-                                        response.end(String.valueOf(result));
-                                    } else {
-                                        response.end(Json.encode(result));
+                        if (!mapAnnotation.async()) {
+                            switch (mapAnnotation.type()) {
+                                case JSON:
+                                case PLAIN:
+                                    if (!response.ended()) {
+                                        if (Objects.nonNull(result)) {
+                                            if (isBasicReturnType(result)) {
+                                                response.end(String.valueOf(result));
+                                            } else {
+                                                response.end(Json.encode(result));
+                                            }
+                                        } else {
+                                            response.end();
+                                        }
                                     }
-                                } else {
-                                    response.end();
-                                }
+                                    break;
+                                default:
+                                    if (!response.ended()) {
+                                        response.end();
+                                    }
                             }
                         }
                     });
+                    // 模版类型
+                    if (ResponseType.TEMPLATE.equals(mapAnnotation.type())) {
+                        route.handler(templateHandler);
+                    }
                     // log info
                     log.info("Http api path [{}] register with {}.{}", path, clazz.getName(), method.getName());
                 }

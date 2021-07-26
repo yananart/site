@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+
+    <title>个人开发测试</title>
+    <meta name="referrer" content="same-origin">
+    <meta name="referrer" content="no-referrer"/>
+    <meta name="description" content="Yananart的小站">
+    <meta name="author" content="Yananart">
+
+    <link rel="apple-touch-icon-precomposed" href="https://yananart.cn/favicon.ico" type="image/x-icon"/>
+    <link rel="apple-touch-icon" href="https://yananart.cn/favicon.ico" type="image/x-icon"/>
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.yananart.cn/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="https://cdn.yananart.cn/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.yananart.cn/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.yananart.cn/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+</head>
+<body>
+<div>
+
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="page-header">
+                    <h1>
+                        Yananart <small><small>无聊的时候摸鱼写的</small></small>
+                    </h1>
+                    <div class="row clearfix">
+                        <div id="tag" class="col-md-12 column">
+                            <span class="label label-danger">废物</span>
+                            <span class="label label-danger">垃圾</span>
+                            <span class="label label-success">会点摄影</span>
+                            <span class="label label-info">热爱单机</span>
+                            <span class="label label-danger">咸鱼</span>
+                            <span class="label label-primary">Java</span>
+                            <span class="label label-primary">会点爬虫</span>
+                            <span class="label label-success">日剧爱好者</span>
+                            <span class="label label-info">Steamer</span>
+                            <span class="label label-success">Marvel</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+                            <img class="img-responsive" alt="300x200"
+                                 src="https://wx1.sinaimg.cn/mw1024/eda947edly1g2hni1f0s5j23sw2iokjo.jpg"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+                            <img class="img-responsive" alt="300x200"
+                                 src="https://wx3.sinaimg.cn/mw690/eda947edly1fkw4893jpkj23sw2io4fh.jpg"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="thumbnail">
+                            <img class="img-responsive" alt="300x200"
+                                 src="https://wx2.sinaimg.cn/mw1024/eda947edly1g1niolurlij23sw2io7wk.jpg"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="media">
+            <div class="media-left media-top">
+                <img src="https://tvax1.sinaimg.cn/crop.0.0.672.672.180/eda947edly8fxbkjk223lj20io0iodgq.jpg"
+                     class="media-object" height="75sp" width="75sp">
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading"><b>Yananart</b></h4>
+                <span>Hello guys</span><br>
+                <span>可以联系我 <a href="mailto:yananart@yananart.cn">yananart@yananart.cn</a></span><br>
+                <span>Weibo     <a href="https://weibo.com/seantheory">@Yananart</a></span><br>
+                <span>GitHub    <a href="https://github.com/yananart">@Yananart</a></span><br>
+                <span>Zhihu     <a href="https://www.zhihu.com/people/zhou-yang-en/activities">@Yananart</a></span><br>
+                <span>Steam    <a href="https://steamcommunity.com/id/yananart">@Yananart</a></span>
+            </div>
+        </div>
+        <br><br>
+        <div class="media">
+            <div class="media-left media-top">
+                <img src="https://tvax1.sinaimg.cn/crop.0.0.672.672.180/eda947edly8fxbkjk223lj20io0iodgq.jpg"
+                     class="media-object" height="75sp" width="75sp">
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading"><b>Yananart</b></h4>
+                <span>搭建完成</span>
+                <span><a href="./tool/oasis">微博绿洲图片无水印爬取工具</a></span><br>
+                <span>基于SpringBoot</span>
+            </div>
+        </div>
+        <br><br>
+        <div class="media">
+            <div class="media-left media-top">
+                <img src="https://tvax1.sinaimg.cn/crop.0.0.672.672.180/eda947edly8fxbkjk223lj20io0iodgq.jpg"
+                     class="media-object" height="75sp" width="75sp">
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading"><b>Yananart</b></h4>
+                <span>做了个简单的<a href="./photo">照片墙</a></span><br>
+                <span>之后应该会添加后端管理，现在先用的是微博的图床</span>
+            </div>
+        </div>
+        <br><br>
+        <div class="media">
+            <div class="media-left media-top">
+                <img src="https://tvax1.sinaimg.cn/crop.0.0.672.672.180/eda947edly8fxbkjk223lj20io0iodgq.jpg"
+                     class="media-object" height="75sp" width="75sp">
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading"><b>Yananart</b></h4>
+                <span>搭建了一个Kms服务</span><br>
+                <code>slmgr /skms yananart.cn</code><br>
+                <code>slmgr /ato</code><br>
+                <code>slmgr /xpr</code>
+            </div>
+        </div>
+        <br><br>
+        <div class="media">
+            <div class="media-left media-top">
+                <img src="https://tvax1.sinaimg.cn/crop.0.0.672.672.180/eda947edly8fxbkjk223lj20io0iodgq.jpg"
+                     class="media-object" height="75sp" width="75sp">
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading"><b>Yananart</b></h4>
+                <span>上线本服务器的<a href="./status">服务监控</a></span><br>
+                <span>上线日期 <code>2019/10/02</code></span><br>
+                <span>由于UptimeRobot的api挂了可能用不了</span>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br>
+
+    <nav class="navbar navbar-default navbar-static-bottom" style="margin-bottom:0px;" role="navigation">
+        <div class="col-sm-offset-5 col-sm-2">
+            <div title="MySSL安全签章" id="myssl_seal" class="center-block col-sm-4"
+                 onclick="window.open('https://myssl.com/seal/detail?domain=yananart.cn','MySSL安全签章','height=800,width=470,top=0,right=0,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no')"
+                 style="text-align: center; height: 100%;">
+                <img src="https://sealres.myssl.com/seal/img/2x/seal.png?domain=myssl.com" alt="myssl.com-MySSL安全签章"
+                     style="width: auto; height: 50px; cursor: pointer">
+            </div>
+            <div class="col-sm-8">
+                <span id="copyright" class="text-center center-block"><h5>2018-2021 &copy; Yananart</h5></span>
+                <span id="beian" class="text-center center-block"><a href="http://www.beian.miit.gov.cn/">浙ICP备18020377号-1</a></span>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+<script>
+    !function () {
+        var t, e = document.title;
+        document.addEventListener("visibilitychange", function () {
+            document.hidden ? (document.title = "死鬼去哪里了！", clearTimeout(t)) : (document.title = "(つェ⊂)咦!又好了!", t = setTimeout(function () {
+                document.title = 'Yananart'
+            }, 2e3))
+        })
+    }()
+</script>
+
+</body>
+</html>

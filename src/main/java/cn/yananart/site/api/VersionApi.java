@@ -2,6 +2,9 @@ package cn.yananart.site.api;
 
 import cn.yananart.framework.annotation.ApiMapping;
 import cn.yananart.framework.annotation.HttpApi;
+import cn.yananart.framework.annotation.paramter.Param;
+import cn.yananart.framework.logging.Logger;
+import cn.yananart.framework.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 
 /**
@@ -13,8 +16,11 @@ import io.vertx.core.json.JsonObject;
 @HttpApi(path = "/version")
 public class VersionApi {
 
-    @ApiMapping
-    public JsonObject version() {
+    private static final Logger log = LoggerFactory.getLogger(VersionApi.class);
+
+    @ApiMapping(async = false)
+    public JsonObject version(@Param("id") String id) {
+        log.info("id = {}", id);
         JsonObject info = new JsonObject();
         info.put("Author", "Yananart");
         info.put("Email", "yananart@yananart.cn");

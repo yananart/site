@@ -2,6 +2,8 @@ package cn.yananart.site.api;
 
 import cn.yananart.framework.annotation.ApiMapping;
 import cn.yananart.framework.annotation.HttpApi;
+import cn.yananart.framework.commons.ResponseType;
+import io.vertx.ext.web.RoutingContext;
 
 /**
  * 主页
@@ -12,9 +14,9 @@ import cn.yananart.framework.annotation.HttpApi;
 @HttpApi
 public class HomeApi {
 
-    @ApiMapping
-    public void index() {
-
+    @ApiMapping(type = ResponseType.TEMPLATE)
+    public void index(RoutingContext context) {
+        context.next();
     }
 
 }
