@@ -6,10 +6,11 @@ import cn.yananart.framework.annotation.HttpApi;
 import cn.yananart.framework.annotation.paramter.Body;
 import cn.yananart.framework.annotation.paramter.Param;
 import cn.yananart.framework.commons.ResponseType;
-import cn.yananart.framework.config.YananartContext;
+import cn.yananart.framework.context.YananartContext;
 import cn.yananart.framework.handler.TemplateHandler;
 import cn.yananart.framework.logging.Logger;
 import cn.yananart.framework.logging.LoggerFactory;
+import com.google.inject.Inject;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -60,10 +61,11 @@ public class WebWorker {
      */
     private final YananartContext config;
 
-    public WebWorker(YananartContext config) {
-        this.config = config;
-        this.vertx = config.getVertx();
-        this.router = config.getRouter();
+    @Inject
+    public WebWorker(YananartContext context) {
+        this.config = context;
+        this.vertx = context.getVertx();
+        this.router = context.getRouter();
     }
 
 
@@ -210,7 +212,7 @@ public class WebWorker {
         // 遍历所有api
         for (final var clazz : classes) {
             // 实例 todo 考虑单例 IOC
-            Object bean = clazz.getDeclaredConstructor().newInstance();
+            Object bean = YananartApplication.getInjector().getInstance(clazz);
             // 获取当前bean的类型，且获取其上的注解
             final var apiAnnotation = clazz.getAnnotation(HttpApi.class);
             // 获取该类的所有方法，遍历查看是否包含注解

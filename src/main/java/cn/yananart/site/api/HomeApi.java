@@ -3,6 +3,8 @@ package cn.yananart.site.api;
 import cn.yananart.framework.annotation.ApiMapping;
 import cn.yananart.framework.annotation.HttpApi;
 import cn.yananart.framework.commons.ResponseType;
+import cn.yananart.site.service.PhotoService;
+import com.google.inject.Inject;
 import io.vertx.ext.web.RoutingContext;
 
 import java.time.LocalDate;
@@ -15,6 +17,9 @@ import java.time.LocalDate;
  */
 @HttpApi
 public class HomeApi {
+
+    @Inject
+    private PhotoService photoService;
 
     @ApiMapping(type = ResponseType.TEMPLATE)
     public void index(RoutingContext context) {
@@ -30,7 +35,7 @@ public class HomeApi {
         var localDate = LocalDate.now();
         var year = localDate.getYear();
         context.put("year", year);
-        context.next();
+        photoService.queryPhotos(context);
     }
 
 

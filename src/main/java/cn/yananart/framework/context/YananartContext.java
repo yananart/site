@@ -1,7 +1,9 @@
-package cn.yananart.framework.config;
+package cn.yananart.framework.context;
 
+import cn.yananart.framework.annotation.Bean;
 import cn.yananart.framework.logging.Logger;
 import cn.yananart.framework.logging.LoggerFactory;
+import com.google.inject.Inject;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.file.FileSystem;
@@ -16,6 +18,7 @@ import lombok.Data;
  * @date 2021/7/20
  */
 @Data
+@Bean
 public class YananartContext {
 
     private static final Logger log = LoggerFactory.getLogger(YananartContext.class);
@@ -48,9 +51,10 @@ public class YananartContext {
     private final Router router;
 
 
-    public YananartContext() {
-        this.vertx = Vertx.vertx();
-        this.router = Router.router(vertx);
+    @Inject
+    public YananartContext(Vertx vertx, Router router) {
+        this.vertx = vertx;
+        this.router = router;
         initConfig();
     }
 

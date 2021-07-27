@@ -4,3 +4,4 @@
 
 - Java 11
 - VertX
+- guice

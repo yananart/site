@@ -1,9 +1,13 @@
 package cn.yananart.framework;
 
-import cn.yananart.framework.config.YananartContext;
+import cn.yananart.framework.context.YananartContext;
 import cn.yananart.framework.logging.Logger;
 import cn.yananart.framework.logging.LoggerFactory;
+import cn.yananart.framework.provider.BeanProvider;
+import cn.yananart.framework.provider.VertxProvider;
 import cn.yananart.framework.worker.WebWorker;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import io.vertx.core.Vertx;
 import lombok.Getter;
 
@@ -35,6 +39,13 @@ public class YananartApplication {
 
 
     /**
+     * ioc
+     */
+    @Getter
+    private static Injector injector;
+
+
+    /**
      * 启动方法
      *
      * @param clazz 启动类
@@ -43,6 +54,7 @@ public class YananartApplication {
     public static YananartContext run(Class<?> clazz, String... args) {
         Objects.requireNonNull(clazz, "Start class can not be null");
         startClass = clazz;
+        injector = Guice.createInjector(new VertxProvider(), new BeanProvider());
         YananartApplication.context = init();
         log.info("Yananart application start success!");
         return YananartApplication.context;
@@ -53,10 +65,10 @@ public class YananartApplication {
      * 初始化
      */
     private static YananartContext init() {
-        YananartContext context = new YananartContext();
+        YananartContext context = injector.getInstance(YananartContext.class);
         Vertx vertx = context.getVertx();
         Objects.requireNonNull(vertx, "Load vertx instance failed");
-        new WebWorker(context).startWebServer();
+        injector.getInstance(WebWorker.class).startWebServer();
         return context;
     }
 }
