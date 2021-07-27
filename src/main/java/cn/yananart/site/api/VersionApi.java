@@ -25,7 +25,7 @@ public class VersionApi {
         info.put("Author", "Yananart");
         info.put("Email", "yananart@yananart.cn");
         info.put("Build in", "Yananart Framework V0.1");
-        info.put("Power by", "Spring Boot & VertX Web");
+        info.put("Power by", "VertX & Guice");
         info.put("Demo version", "V1.0");
         return info;
     }
