@@ -8,8 +8,8 @@
             "host": "mysql.yananart.cn",
             "port": 10101,
             "database": "yananart_site",
-            "username": "root",
-            "password": "zzy19961103"
+            "username": "onlyread",
+            "password": "test2021"
         }
     }
 }
