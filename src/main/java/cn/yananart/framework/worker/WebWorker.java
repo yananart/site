@@ -56,16 +56,11 @@ public class WebWorker {
      */
     private final Router router;
 
-    /**
-     * config
-     */
-    private final YananartContext config;
 
     @Inject
-    public WebWorker(YananartContext context) {
-        this.config = context;
-        this.vertx = context.getVertx();
-        this.router = context.getRouter();
+    public WebWorker(Vertx vertx, Router router) {
+        this.vertx = vertx;
+        this.router = router;
     }
 
 
@@ -85,7 +80,7 @@ public class WebWorker {
         }
         // 启动监听
         httpServer.requestHandler(router)
-                .listen(config.getPort())
+                .listen(YananartApplication.getContext().getPort())
                 .onFailure(error -> log.error("Started web server fail", error))
                 .onSuccess(server -> log.info("Started web server in {} with vertx", server.actualPort()));
     }
@@ -128,7 +123,7 @@ public class WebWorker {
      * 设置网站图标
      */
     private void setFavicon() {
-        FaviconHandler faviconHandler = FaviconHandler.create(vertx, config.getFavicon());
+        FaviconHandler faviconHandler = FaviconHandler.create(vertx, YananartApplication.getContext().getFavicon());
         router.route("/favicon.ico").handler(faviconHandler);
     }
 

@@ -1,4 +1,15 @@
 {
-    "server.port": 8080,
-    "server.favicon": "favicon.ico"
+    "server": {
+        "port": 8080,
+        "favicon": "favicon.ico"
+    },
+    "datasource": {
+        "mysql": {
+            "host": "mysql.yananart.cn",
+            "port": 10101,
+            "database": "yananart_site",
+            "username": "root",
+            "password": "zzy19961103"
+        }
+    }
 }

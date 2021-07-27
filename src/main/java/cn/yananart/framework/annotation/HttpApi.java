@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @author yananart
  * @date 2021/7/20
  */
-@Bean
+@Provides
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

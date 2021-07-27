@@ -25,98 +25,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx1.sinaimg.cn/mw1024/eda947edly1g2hni1f0s5j23sw2iokjo.jpg">
-                    <img src="https://wx1.sinaimg.cn/mw1024/eda947edly1g2hni1f0s5j23sw2iokjo.jpg" alt="Park">
-                </a>
-            </div>
-        </div>
 
-        <div class="col-sm-6 col-md-4">
+        <div class="col-sm-6 col-md-4" th:each="photo:${photoList}">
             <div class="thumbnail">
-                <a class="lightbox" href="https://wx3.sinaimg.cn/mw1024/eda947edly1g2hni9ixr3j23sw2ionpg.jpg">
-                    <img src="https://wx3.sinaimg.cn/mw1024/eda947edly1g2hni9ixr3j23sw2ionpg.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx4.sinaimg.cn/mw1024/eda947edly1g1nioft2pwj23sw2io7wi.jpg">
-                    <img src="https://wx4.sinaimg.cn/mw1024/eda947edly1g1nioft2pwj23sw2io7wi.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx2.sinaimg.cn/mw1024/eda947edly1g1niolurlij23sw2io7wk.jpg">
-                    <img src="https://wx2.sinaimg.cn/mw1024/eda947edly1g1niolurlij23sw2io7wk.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx1.sinaimg.cn/mw1024/eda947edly1g1niopk9dwj23sw2ioqv6.jpg">
-                    <img src="https://wx1.sinaimg.cn/mw1024/eda947edly1g1niopk9dwj23sw2ioqv6.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx3.sinaimg.cn/mw1024/eda947edly1fy0qrhzf1ej219b0u04n1.jpg">
-                    <img src="https://wx3.sinaimg.cn/mw1024/eda947edly1fy0qrhzf1ej219b0u04n1.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx4.sinaimg.cn/mw1024/eda947edly1fy0qrj0iizj219b0u0khn.jpg">
-                    <img src="https://wx4.sinaimg.cn/mw1024/eda947edly1fy0qrj0iizj219b0u0khn.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx1.sinaimg.cn/mw1024/eda947edly1fy0qrluksqj219b0u0b29.jpg">
-                    <img src="https://wx1.sinaimg.cn/mw1024/eda947edly1fy0qrluksqj219b0u0b29.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx1.sinaimg.cn/mw1024/eda947edly1fupo8h75jwj23sw2io7l2.jpg">
-                    <img src="https://wx1.sinaimg.cn/mw1024/eda947edly1fupo8h75jwj23sw2io7l2.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx1.sinaimg.cn/mw1024/eda947edly1fupo8kzi5gj23sw2iotxn.jpg">
-                    <img src="https://wx1.sinaimg.cn/mw1024/eda947edly1fupo8kzi5gj23sw2iotxn.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx1.sinaimg.cn/mw1024/eda947edly1frkm0mefprj23sw2io1kx.jpg">
-                    <img src="https://wx1.sinaimg.cn/mw1024/eda947edly1frkm0mefprj23sw2io1kx.jpg" alt="Bridge">
-                </a>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4">
-            <div class="thumbnail">
-                <a class="lightbox" href="https://wx4.sinaimg.cn/mw1024/eda947edly1frkm0naz3pj23pp2gk4m4.jpg">
-                    <img src="https://wx4.sinaimg.cn/mw1024/eda947edly1frkm0naz3pj23pp2gk4m4.jpg" alt="Bridge">
+                <a class="lightbox" th:href="${photo}">
+                    <img th:src="${photo}" alt="Park">
                 </a>
             </div>
         </div>
