@@ -3,5 +3,5 @@
 ## 技术栈
 
 - Java 11
-- VertX
-- guice
+- [Vert.x](https://vertx.io/)
+- [Guice](https://github.com/google/guice)

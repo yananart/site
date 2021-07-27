@@ -6,7 +6,6 @@ import cn.yananart.framework.annotation.HttpApi;
 import cn.yananart.framework.annotation.paramter.Body;
 import cn.yananart.framework.annotation.paramter.Param;
 import cn.yananart.framework.commons.ResponseType;
-import cn.yananart.framework.context.YananartContext;
 import cn.yananart.framework.handler.TemplateHandler;
 import cn.yananart.framework.logging.Logger;
 import cn.yananart.framework.logging.LoggerFactory;
