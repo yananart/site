@@ -38,10 +38,8 @@ public class Scanner {
     public static Set<Class<?>> getClasses(String packageName) throws Exception {
         // 第一个class类的集合
         var classes = new HashSet<Class<?>>();
-        // 是否循环迭代
-        var recursive = true;
         // 获取包的名字 并进行替换
-        var packageDirName = packageName.replace('.', File.separatorChar);
+        var packageDirName = packageName.replace('.', '/');
         // 定义一个枚举的集合 并进行循环来处理这个目录下的things
         Enumeration<URL> dirs;
         try {

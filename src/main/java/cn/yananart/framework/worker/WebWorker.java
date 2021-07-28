@@ -67,10 +67,13 @@ public class WebWorker {
      * 初始化web服务器
      */
     public void startWebServer() {
+        log.info("begin start web server");
         // creat a server
         var httpServer = vertx.createHttpServer();
         // favicon
         setFavicon();
+        // static
+        setStaticHandler();
         // 注册http接口
         try {
             registerHttpApi();
@@ -124,6 +127,17 @@ public class WebWorker {
     private void setFavicon() {
         FaviconHandler faviconHandler = FaviconHandler.create(vertx, YananartApplication.getContext().getFavicon());
         router.route("/favicon.ico").handler(faviconHandler);
+    }
+
+
+    /**
+     * 设置静态资源处理器
+     */
+    private void setStaticHandler() {
+        // static
+        var sHandler = StaticHandler.create();
+        sHandler.setWebRoot("static");
+        router.route("/static/*").handler(sHandler);
     }
 
 
@@ -189,17 +203,12 @@ public class WebWorker {
      * 扫描spring容器，将所有包含注解的bean转换注册到vertx上
      */
     private void registerHttpApi() throws Exception {
-        // start class
-        var startClass = YananartApplication.getStartClass();
-        var pkgName = startClass.getPackageName();
-
         // TemplateHandler
         final TemplateHandler templateHandler = TemplateHandler.create(ThymeleafTemplateEngine.create(vertx));
 
-        // static
-        var sHandler = StaticHandler.create();
-        sHandler.setWebRoot("static");
-        router.route("/static/*").handler(sHandler);
+        // start class
+        var startClass = YananartApplication.getStartClass();
+        var pkgName = startClass.getPackageName();
 
         Set<Class<?>> classes = Scanner.getAnnotationClasses(pkgName, HttpApi.class);
 
