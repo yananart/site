@@ -16,6 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <plugin.compiler.version>3.8.1</plugin.compiler.version>
+        <plugin.jar.version>2.6</plugin.jar.version>
         <plugin.assembly.version>3.3.0</plugin.assembly.version>
         <lombok.version>1.18.16</lombok.version>
         <vert-x.version>4.1.1</vert-x.version>
@@ -91,30 +92,34 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>${plugin.assembly.version}</version>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${plugin.jar.version}</version>
                 <configuration>
-                    <!-- 配置描述符文件
-                    <descriptor>src/main/assembly/assembly.xml</descriptor>
-                   也可以使用Maven预配置的描述符 -->
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
                     <archive>
                         <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>cn.yananart.site.Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${plugin.assembly.version}</version>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <!-- 绑定到package生命周期 -->
+                        <id>assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <!-- 只运行一次 -->
                             <goal>single</goal>
                         </goals>
+                        <configuration>
+                            <finalName>site-all</finalName>
+                            <descriptors>
+                                <descriptor>src/main/assembly/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

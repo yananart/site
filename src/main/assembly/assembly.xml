@@ -1,38 +1,46 @@
-<assembly>
+<?xml version='1.0' encoding='UTF-8'?>
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+    <id>${project.version}</id>
     <formats>
-        <!--支持 zip，tar，tar.gz，tar.bz2，jar，dir，war 等 -->
-        <format>tar.gz</format>
         <format>zip</format>
-        <format>dir</format>
     </formats>
     <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
-            <directory>src/main/resources</directory>
-            <outputDirectory>conf</outputDirectory>
-            <fileMode>0644</fileMode>
-        </fileSet>
-        <fileSet>
-            <directory>${profile.dir}</directory>
-            <outputDirectory>conf</outputDirectory>
-            <!-- 表示的是包含下面格式的资源文件 -->
             <includes>
-                <include>*.xml</include>
-                <include>*.properties</include>
-                <include>**/*.xml</include>
-                <include>**/*.properties</include>
+                <include>readme.md</include>
             </includes>
-            <fileMode>0644</fileMode>
+            <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>src/main/assembly/bin</directory>
-            <outputDirectory>bin</outputDirectory>
-            <fileMode>0755</fileMode>
+            <directory>bin</directory>
+            <includes>
+                <include>*</include>
+            </includes>
+            <outputDirectory>/bin</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources/</directory>
+            <includes>
+                <include>config.json</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
         </fileSet>
     </fileSets>
     <dependencySets>
         <dependencySet>
-            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>/</outputDirectory>
+            <scope>provided</scope>
+        </dependencySet>
+        <dependencySet>
+            <unpack>false</unpack>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>libs</outputDirectory>
+            <scope>runtime</scope>
         </dependencySet>
     </dependencySets>
 </assembly>
